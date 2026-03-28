@@ -4,22 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskMaster AI Productivity System</title>
+    <title>Multi-Tasking Agent Productivity System</title>
     <link rel="stylesheet" href="style.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body>
+<body class="theme-default">
     <div class="app-container">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="logo">
+            <div class="logo" style="margin-bottom:24px;">
                 <span class="logo-icon">⚡</span>
-                <h2>TaskMaster <span class="gradient-text">AI</span></h2>
+                <h2>Multi-Tasking <span class="gradient-text">Agent</span></h2>
             </div>
-            <nav class="agent-status">
+
+            <button class="btn-secondary"
+                onclick="document.getElementById('apiModalOverlay').classList.remove('hidden')"
+                style="width:100%; margin-bottom: 24px;">⚙️ AI Settings</button>
+
+            <nav class="agent-status" style="flex:1;">
                 <h3>System Agents</h3>
                 <ul>
                     <li id="tab-overview" class="active" onclick="switchTab('overview')"><span>🌍</span> Overview <div
@@ -39,6 +45,16 @@
                     </li>
                 </ul>
             </nav>
+
+            <div class="theme-switcher glass-panel" style="margin-top:24px; padding:16px;">
+                <h3 style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px; text-transform:uppercase;">
+                    Visual Mode</h3>
+                <div style="display:flex; gap:8px;">
+                    <button class="theme-btn" onclick="setTheme('theme-default')" title="Dark Mode">🌑</button>
+                    <button class="theme-btn" onclick="setTheme('theme-light')" title="Light Mode">☀️</button>
+                    <button class="theme-btn" onclick="setTheme('theme-neon')" title="Cyberpunk Neon">🔥</button>
+                </div>
+            </div>
         </aside>
 
         <!-- Main Content -->
@@ -48,29 +64,27 @@
                     <h1>Welcome back, Creator</h1>
                     <p>All sub-agents are online and tracking your productivity workflows.</p>
                 </div>
+                <button class="btn-secondary" onclick="enableNotifications()" id="notifyBtn">🔔 Enable Alerts</button>
             </header>
 
-            <!-- Interactive AI Chat Widget -->
             <div class="chat-container glass-panel">
                 <div class="chat-history" id="chatHistory">
                     <div class="message ai-message">
                         <span class="avatar">⚡</span>
-                        <div class="message-content">Hello! I'm TaskMaster AI. I can manage your schedule, track tasks,
-                            and extract text from PDFs or Images! Try typing <strong>"Plan my week"</strong>,
-                            <strong>"Add task: Buy Milk"</strong> or click 📤 in Knowledge DB to upload a file!
-                        </div>
+                        <div class="message-content">Hello! I'm Multi-Tasking Agent. Try clicking 🎙️ to use your voice,
+                            or
+                            click ⚙️ AI Settings to connect a real OpenAI Key!</div>
                     </div>
-                    <!-- Typing Indicator -->
                     <div id="typingIndicator" class="message ai-message hidden">
                         <span class="avatar">⚡</span>
-                        <div class="message-content typing">
-                            <span></span><span></span><span></span>
-                        </div>
+                        <div class="message-content typing"><span></span><span></span><span></span></div>
                     </div>
                 </div>
                 <form id="chatForm" class="chat-input-area">
+                    <button type="button" id="voiceBtn" class="icon-btn"
+                        style="background:var(--glass-bg); padding:12px 16px; border-radius:12px;">🎙️</button>
                     <input type="text" id="commandInput"
-                        placeholder="Message TaskMaster AI... (e.g. Create note: Call John)" autocomplete="off"
+                        placeholder="Message Multi-Tasking Agent... (e.g. Create note: Call John)" autocomplete="off"
                         required>
                     <button type="submit" class="btn-primary">Send 🚀</button>
                 </form>
@@ -78,7 +92,17 @@
 
             <!-- Agent Output Cards -->
             <div class="dashboard-grid">
-                <!-- Schedule Component -->
+
+                <div id="widget-analytics" class="glass-panel widget tab-content">
+                    <div class="widget-header">
+                        <h3>📈 Agent Analytics</h3>
+                    </div>
+                    <div class="widget-content"
+                        style="display:flex; justify-content:center; align-items:center; height:200px;">
+                        <canvas id="productivityChart"></canvas>
+                    </div>
+                </div>
+
                 <div id="widget-schedule" class="glass-panel widget tab-content">
                     <div class="widget-header">
                         <h3>📅 Schedule</h3>
@@ -96,7 +120,6 @@
                     <div class="widget-content" id="taskList"></div>
                 </div>
 
-                <!-- Notes Component -->
                 <div id="widget-note" class="glass-panel widget tab-content">
                     <div class="widget-header">
                         <h3>🧠 Knowledge DB</h3>
@@ -112,59 +135,44 @@
                         Notes</button>
                 </div>
 
-                <!-- Integrations Component -->
                 <div id="widget-integration" class="glass-panel widget tab-content">
                     <div class="widget-header">
                         <h3>🔗 API Integrations</h3>
+                        <button class="icon-btn" onclick="openModal('integration', 'add')"
+                            title="Add New API Integration">➕</button>
                     </div>
-                    <div class="widget-content">
-                        <div class="list-item integration-item">
-                            <div>
-                                <div class="item-title">Google Calendar</div>
-                                <div class="item-meta">Sync events two-way</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                        <div class="list-item integration-item">
-                            <div>
-                                <div class="item-title">Notion Workspace</div>
-                                <div class="item-meta">Export Knowledge notes</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                        <div class="list-item integration-item">
-                            <div>
-                                <div class="item-title">Slack Notifications</div>
-                                <div class="item-meta">Send priority task alerts</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
+                    <div class="widget-content" id="integrationList">
+                        <!-- Dynamic list renders via script.js -->
                     </div>
                 </div>
+
             </div>
         </main>
     </div>
 
-    <!-- Global Floating Toast Container -->
     <div id="toastContainer" class="toast-container"></div>
-
-    <!-- Hidden File Input -->
     <input type="file" id="fileUpload" style="display: none;" accept=".txt,.pdf,.png,.jpg,.jpeg,.doc,.docx"
         onchange="handleFileUpload(event)">
+
+    <!-- API Settings Modal -->
+    <div id="apiModalOverlay" class="modal-overlay hidden">
+        <div class="glass-panel modal-content">
+            <h3 style="color:white; margin-bottom:8px;">⚙️ AI Settings</h3>
+            <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:16px;">Connect a genuine OpenAI API key
+                to completely replace the Simulated Backend with real Intelligence processing.</p>
+            <input type="password" id="apiKeyInput" placeholder="sk-proj-..." autocomplete="off">
+            <div class="modal-actions">
+                <button class="btn-secondary"
+                    onclick="document.getElementById('apiModalOverlay').classList.add('hidden')">Close</button>
+                <button class="btn-primary" onclick="saveApiKey()">Save Key</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Unified Add/Edit Modal -->
     <div id="modalOverlay" class="modal-overlay hidden">
         <div class="glass-panel modal-content">
-            <h3 id="modalTitle">Add Item</h3>
+            <h3 id="modalTitle" style="color:white;">Add Item</h3>
             <input type="hidden" id="modalType">
             <input type="hidden" id="modalAction">
             <input type="hidden" id="modalId">
