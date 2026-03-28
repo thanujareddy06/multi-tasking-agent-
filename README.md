@@ -1,16 +1,83 @@
-# React + Vite
+# 🚀 Multi-Tasking Agent
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Multi-Tasking Agent Logo](https://via.placeholder.com/150x150.png?text=Multi-Tasking+Agent)
 
-Currently, two official plugins are available:
+**Multi-Tasking Agent** – Your **multi-tasking AI web agent** built with **React + Vite** to manage tasks, schedules, and notes simultaneously, providing **AI-powered workflow optimization**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![React](https://img.shields.io/badge/React-18.2.0-blue)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-5.0-orange)](https://vitejs.dev/)
+[![Node.js](https://img.shields.io/badge/Node.js-20.0-green)](https://nodejs.org/)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Key Features
 
-## Expanding the ESLint configuration
+- 🤖 **Multi-Agent AI**
+  - **Scheduler Agent:** Optimize your weekly calendar automatically.
+  - **Task Agent:** Track and prioritize multiple tasks at once.
+  - **Knowledge Agent:** Store and summarize notes intelligently.
+  - **Integration Agent:** Connect to external tools (Google Calendar, Trello, Notion).
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 📅 **Interactive Schedule & Tasks**
+  - Weekly calendar view with AI-suggested focus sessions.
+  - Task cards with interactive buttons: Complete, Edit, Reschedule, Pin.
+  - Handles overlapping tasks intelligently.
+
+- 🧠 **Smart AI Suggestions**
+  - Recommendations to improve workflow and productivity.
+  - Summarizes notes and tasks for better planning.
+
+- 🎨 **Modern Web Interface**
+  - Chat-like command input for interacting with agents.
+  - Responsive design with progress indicators and visual cards.
+
+---
+
+![Multi-Tasking Agent Screenshot](https://via.placeholder.com/800x400.png?text=Multi-Tasking+Agent+Web+Interface)
+
+---
+
+## Tech Stack
+
+- **Frontend:** React + Vite, HTML, CSS, JavaScript  
+- **Backend:** Node.js + Express (API for multi-agent processing)  
+- **Database:** JSON (can be upgraded to MongoDB/PostgreSQL)  
+- **Deployment:** Local dev with Vite or any Node.js hosting platform  
+
+---
+
+## Getting Started
+
+### Install dependencies
+```bash
+npm install
+Start the development server
+npm run dev
+
+Open your browser at http://localhost:5173
+
+Usage Examples
+"Plan my week with all meetings, deadlines, and focus sessions"
+"Add task: Finish AI project by Friday"
+"Add note: Hackathon project ideas"
+"Show all tasks and upcoming events"
+
+The AI responds with interactive cards displaying tasks, events, notes, and actionable suggestions.
+
+Scripts
+Command	Description
+npm run dev	Start the development server with HMR
+npm run build	Build the production-ready project
+npm run preview	Preview production build locally
+npm run lint	Run ESLint to check for linting issues
+Future Enhancements
+Real database (MongoDB/PostgreSQL) with multi-user support
+Authentication & personalized dashboards
+Integration with more productivity tools (Google Calendar, Notion, Trello)
+AI-powered auto-scheduling and workflow optimization
+License
+
+MIT License © 2026 Dubba Thanuja Reddy
+
+“Plan, track, and optimize your week—smarter, faster, with Multi-Tasking Agent.”
