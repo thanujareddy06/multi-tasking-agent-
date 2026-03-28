@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster AI Productivity System</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <h2>TaskMaster <span class="gradient-text">AI</span></h2>
+            </div>
+            <nav class="agent-status">
+                <h3>System Agents</h3>
+                <ul>
+                    <li id="tab-overview" class="active" onclick="switchTab('overview')"><span>🌍</span> Overview <div
+                            class="badge-blue">All</div>
+                    </li>
+                    <li id="tab-scheduler" onclick="switchTab('scheduler')"><span>📅</span> Scheduler <div
+                            class="badge-green">Running</div>
+                    </li>
+                    <li id="tab-task" onclick="switchTab('task')"><span>✅</span> Task Agent <div class="badge-green">
+                            Syncing</div>
+                    </li>
+                    <li id="tab-knowledge" onclick="switchTab('knowledge')"><span>🧠</span> Knowledge <div
+                            class="badge-green">Indexed</div>
+                    </li>
+                    <li id="tab-integration" onclick="switchTab('integration')"><span>🔗</span> Integration <div
+                            class="badge-purple">Connected</div>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <div>
+                    <h1>Welcome back, Creator</h1>
+                    <p>All sub-agents are online and tracking your productivity workflows.</p>
+                </div>
+            </header>
+
+            <!-- Interactive AI Chat Widget -->
+            <div class="chat-container glass-panel">
+                <div class="chat-history" id="chatHistory">
+                    <div class="message ai-message">
+                        <span class="avatar">⚡</span>
+                        <div class="message-content">Hello! I'm TaskMaster AI. I can manage your schedule, track tasks,
+                            and extract text from PDFs or Images! Try typing <strong>"Plan my week"</strong>,
+                            <strong>"Add task: Buy Milk"</strong> or click 📤 in Knowledge DB to upload a file!
+                        </div>
+                    </div>
+                    <!-- Typing Indicator -->
+                    <div id="typingIndicator" class="message ai-message hidden">
+                        <span class="avatar">⚡</span>
+                        <div class="message-content typing">
+                            <span></span><span></span><span></span>
+                        </div>
+                    </div>
+                </div>
+                <form id="chatForm" class="chat-input-area">
+                    <input type="text" id="commandInput"
+                        placeholder="Message TaskMaster AI... (e.g. Create note: Call John)" autocomplete="off"
+                        required>
+                    <button type="submit" class="btn-primary">Send 🚀</button>
+                </form>
+            </div>
+
+            <!-- Agent Output Cards -->
+            <div class="dashboard-grid">
+                <!-- Schedule Component -->
+                <div id="widget-schedule" class="glass-panel widget tab-content">
+                    <div class="widget-header">
+                        <h3>📅 Schedule</h3>
+                        <button class="icon-btn" onclick="openModal('schedule', 'add')" title="Add Event">➕</button>
+                    </div>
+                    <div class="widget-content" id="scheduleList"></div>
+                </div>
+
+                <!-- Task Component -->
+                <div id="widget-task" class="glass-panel widget tab-content">
+                    <div class="widget-header">
+                        <h3>✅ Priority Tasks</h3>
+                        <button class="icon-btn" onclick="openModal('task', 'add')" title="Add Task">➕</button>
+                    </div>
+                    <div class="widget-content" id="taskList"></div>
+                </div>
+
+                <!-- Notes Component -->
+                <div id="widget-note" class="glass-panel widget tab-content">
+                    <div class="widget-header">
+                        <h3>🧠 Knowledge DB</h3>
+                        <div>
+                            <button class="icon-btn" onclick="document.getElementById('fileUpload').click()"
+                                title="Upload & Parse Document">📤</button>
+                            <button class="icon-btn" onclick="openModal('note', 'add')" title="Add Note">➕</button>
+                        </div>
+                    </div>
+                    <div class="widget-content" id="noteList"></div>
+                    <button class="btn-secondary" onclick="summarizeNotes()"
+                        style="margin-top:16px; width:100%; border-color: var(--primary); color: white;">✨ Summarize All
+                        Notes</button>
+                </div>
+
+                <!-- Integrations Component -->
+                <div id="widget-integration" class="glass-panel widget tab-content">
+                    <div class="widget-header">
+                        <h3>🔗 API Integrations</h3>
+                    </div>
+                    <div class="widget-content">
+                        <div class="list-item integration-item">
+                            <div>
+                                <div class="item-title">Google Calendar</div>
+                                <div class="item-meta">Sync events two-way</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="list-item integration-item">
+                            <div>
+                                <div class="item-title">Notion Workspace</div>
+                                <div class="item-meta">Export Knowledge notes</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="list-item integration-item">
+                            <div>
+                                <div class="item-title">Slack Notifications</div>
+                                <div class="item-meta">Send priority task alerts</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Global Floating Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Hidden File Input -->
+    <input type="file" id="fileUpload" style="display: none;" accept=".txt,.pdf,.png,.jpg,.jpeg,.doc,.docx"
+        onchange="handleFileUpload(event)">
+
+    <!-- Unified Add/Edit Modal -->
+    <div id="modalOverlay" class="modal-overlay hidden">
+        <div class="glass-panel modal-content">
+            <h3 id="modalTitle">Add Item</h3>
+            <input type="hidden" id="modalType">
+            <input type="hidden" id="modalAction">
+            <input type="hidden" id="modalId">
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
+                <input type="text" id="modalInput1" placeholder="Title">
+                <input type="text" id="modalInput2" placeholder="Time / Deadline">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn-primary" onclick="submitModal()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
